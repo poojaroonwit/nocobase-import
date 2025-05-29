@@ -55,7 +55,7 @@ class DatabaseManager:
 @app.route('/collections', methods=['GET'])
 def list_collections():
  # Initialize DatabaseManager with environment variables
- db_manager = DatabaseManager(DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD)
+    db_manager = DatabaseManager(DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD)
     try:
         collections = get_collections(db_manager)
         return jsonify(collections)
