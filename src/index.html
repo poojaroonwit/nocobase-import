@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <title>NocoBase Data Importer</title>
+
+  </head>
+  <body class="font-sans leading-normal p-6 bg-gray-100">
+ <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">NocoBase Data Importer</h1>
+
+ <p id="loading-indicator" class="text-blue-600 text-center mb-4 font-semibold" style="display: none;">Loading...</p>
+
+<div class="flex items-center justify-center mt-8">
+    <div class="w-2/3">
+        <div class="flex items-center">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">
+ 1
+            </div>
+ <div class="flex-grow border-t-2 border-gray-300 ml-3"></div>
+        </div>
+        <div class="mt-3 text-center">
+ <h2 class="text-lg font-semibold text-gray-700">Upload File & Select Collection</h2>
+            <p class="text-sm text-gray-500">Upload your Excel file and choose the target collection.</p>
+            <form id="uploadForm" class="mt-4 p-4 border border-gray-200 rounded-md bg-white shadow-sm">
+                <div>
+ <label for="collectionSelect">Select Collection:</label>
+ <select id="collectionSelect" name="collection"></select>
+                </div>
+                <div class="mt-4">
+ <label for="excelFile">Choose Excel File:</label>
+ <input type="file" id="excelFile" name="file" accept=".xls,.xlsx">\
+                </div>
+
+ <button type="submit" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">Upload and Select</button>
+            </form>
+             </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="flex items-center justify-center mt-8">
+    <div class="w-2/3">
+        <div class="flex items-center">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gray-400 text-white flex items-center justify-center font-bold">
+ 2
+            </div>
+ <div class="flex-grow border-t-2 border-gray-300 ml-3"></div>
+        </div>
+        <div class="mt-3 text-center">
+            <h2 class="text-lg font-semibold text-gray-700">Process Dependencies</h2>
+            <p class="text-sm text-gray-500">Process relationships and dependencies in your data.</p>
+            <button class="mt-4 w-full bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed">Process Dependencies</button>
+        </div>
+    </div>
+</div>
+
+<div class="flex items-center justify-center mt-8">
+    <div class="w-2/3">
+        <div class="flex items-center">
+            <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gray-400 text-white flex items-center justify-center font-bold">
+ 3
+            </div>
+ <div class="flex-grow border-t-2 border-gray-300 ml-3"></div>
+        </div>
+        <div class="mt-3 text-center">
+            <h2 class="text-lg font-semibold text-gray-700">Validate Data</h2>
+            <p class="text-sm text-gray-500">Validate your data against the collection schema.</p>
+            <button class="mt-4 w-full bg-gray-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed">Validate Data</button>
+        </div>
+    </div>
+</div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Fetch collections on page load
+      const loadingIndicator = document.getElementById('loading-indicator');
+      const selectElement = document.getElementById('collectionSelect');
+
+      loadingIndicator.style.display = 'block'; // Show loading indicator
+
+      fetch('/collections')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(collection => { // Assuming the response is an array of collection names
+            const option = document.createElement('option');
+            option.value = collection;
+            option.textContent = collection;
+            selectElement.appendChild(option);
+          });
+          loadingIndicator.style.display = 'none'; // Hide loading indicator
+        })
+        .catch(error => {
+          console.error('Error fetching collections:', error);
+          loadingIndicator.style.display = 'none'; // Hide loading indicator on error
+        });
+    });
+  </script>
+  </body>
+</html>
