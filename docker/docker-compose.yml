@@ -1,18 +1,44 @@
 version: '3.8'
-
 services:
-  web:
+  app:
     build:
       context: ..
       dockerfile: docker/Dockerfile
     ports:
-      - "6384:6384"
+      - "8501:8501"
     environment:
-      DB_HOST: your_db_host
-      DB_PORT: your_db_port
-      DB_NAME: your_db_name
-      DB_USER: your_db_user
-      DB_PASSWORD: your_db_password
-      SECRET_KEY: your_secret_key
+      PG_HOST: db
+      PG_PORT: 5432
+      PG_DATABASE: nocobase
+      PG_USER: nocobase
+      PG_PASSWORD: nocobase
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: uploads
+    depends_on:
+      - db
+      - minio
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: nocobase
+      POSTGRES_PASSWORD: nocobase
+      POSTGRES_DB: nocobase
     volumes:
-      - .:/app
+      - db_data:/var/lib/postgresql/data
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+volumes:
+  db_data:
+  minio_data:
