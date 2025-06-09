@@ -1,6 +1,5 @@
-# Dev environment
-pip
-autopep8
-
-# App
-flask
+streamlit
+pandas
+psycopg2-binary
+minio
+openpyxl
