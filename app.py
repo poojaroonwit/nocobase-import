@@ -11,7 +11,8 @@ from psycopg2.extras import execute_values
 from psycopg2 import sql
 
 
-app = Flask(__name__)
+# Tell Flask to look for templates in the "src" directory where index.html lives
+app = Flask(__name__, template_folder="src")
 # Set a secret key for session management
 app.secret_key = os.environ.get('SECRET_KEY', 'your_fallback_secret_key')
 
